@@ -14,7 +14,161 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          phone_number: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          phone_number?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone_number?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      reward_transactions: {
+        Row: {
+          cashback_amount: number
+          created_at: string
+          description: string | null
+          id: string
+          points: number
+          transaction_id: string | null
+          user_id: string
+        }
+        Insert: {
+          cashback_amount: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          points: number
+          transaction_id?: string | null
+          user_id: string
+        }
+        Update: {
+          cashback_amount?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          points?: number
+          transaction_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reward_transactions_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rewards: {
+        Row: {
+          cashback_amount: number
+          created_at: string
+          id: string
+          points: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cashback_amount?: number
+          created_at?: string
+          id?: string
+          points?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cashback_amount?: number
+          created_at?: string
+          id?: string
+          points?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          recipient_id: string | null
+          recipient_name: string | null
+          recipient_phone: string | null
+          status: Database["public"]["Enums"]["transaction_status"]
+          type: Database["public"]["Enums"]["transaction_type"]
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          recipient_id?: string | null
+          recipient_name?: string | null
+          recipient_phone?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"]
+          type: Database["public"]["Enums"]["transaction_type"]
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          recipient_id?: string | null
+          recipient_name?: string | null
+          recipient_phone?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"]
+          type?: Database["public"]["Enums"]["transaction_type"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wallets: {
+        Row: {
+          balance: number
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +177,14 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      transaction_status: "pending" | "completed" | "failed" | "cancelled"
+      transaction_type:
+        | "send"
+        | "receive"
+        | "bill_payment"
+        | "recharge"
+        | "add_money"
+        | "withdrawal"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +311,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      transaction_status: ["pending", "completed", "failed", "cancelled"],
+      transaction_type: [
+        "send",
+        "receive",
+        "bill_payment",
+        "recharge",
+        "add_money",
+        "withdrawal",
+      ],
+    },
   },
 } as const
